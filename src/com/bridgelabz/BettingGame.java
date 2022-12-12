@@ -6,48 +6,61 @@ import java.util.Random;
 public class BettingGame {
     /**
      * starting with a stake of $100 every day and bet $1 every game.
-     * Genrate a random in static
      * As a Calculative Gambler if won or lost 50% of the stake, would resign for the day
+     * After 20 days of playing every day would like to know the total amount won or lost.
      */
-    public static final  int initialStake = 100;
-    public static final int stakeBet = 1;
-    public static final float percentage50 = (initialStake / 100) * 50;
-    public static final float highestStake = percentage50 + initialStake;
-    public static final float lowestStake = percentage50 - initialStake;
-    static Random random = new Random();
+    public static final int STAKE=100;
+    public static final int BET=1;
+    public static final int PERCENTAGE_50_STAKE=(STAKE/100)*50;
+    public static final int HIGH_LIMIT=STAKE+PERCENTAGE_50_STAKE;
+    public static final int LOW_LIMIT=STAKE-PERCENTAGE_50_STAKE;
+    public static final int START_DAY=1;
+    public static final int MAX_DAY=20;
+    public static final int STAKES_PER_DAY=50;
+    public static final int START_DOLLARS=0;
 
     /**
-     *This is Main Method is used for the calling the static and instance variables
+     *This is main method is used forAfter 20 days of playing every day
+     * would like to know the total amount won or lost
      */
 
     public static void main(String[] args)
     {
-        int totalStake = initialStake;
+        System.out.println("Welcome to the Gambler Game");
 
-        System.out.println("Welcome to Gambling Game Simulator program");
-        while(totalStake < highestStake && totalStake > lowestStake) {
-            /**
-            *Genrate random Numbers in range 0,1
-             */
-            int play = random.nextInt(2);
+        int days = START_DAY;
+        int totalDollars = START_DOLLARS;
 
-            switch(play)
+        for (days = START_DAY; days <= MAX_DAY; days++)
+        {
+            int totalStake = STAKE;
+
+            while (totalStake < HIGH_LIMIT && totalStake > LOW_LIMIT)
             {
-                case 0:
-                    totalStake = totalStake - stakeBet;
-                    System.out.println("Stake after loosing: "+totalStake);
-                    break;
-                case 1:
-                    totalStake = totalStake + stakeBet;
-                    System.out.println("Stake after winning: "+totalStake);
-                    break;
+                int luck = (int) (Math.random() * 10) % 2;
+                if (luck == 1) {
+                    totalStake = totalStake + BET;
+                } else {
+                    totalStake = totalStake - BET;
+                }
             }
-
+            if (totalStake == HIGH_LIMIT)
+            {
+                totalDollars += STAKES_PER_DAY;
+                System.out.println("Gambler won by " +totalDollars+" dollars on day "+days);
+            } else {
+                totalDollars -= STAKES_PER_DAY;
+                System.out.println("Gambler lost by " +totalDollars+" dollars on day "+days);
+            }
         }
-        if(totalStake == highestStake)
-            System.out.println("Gambler won by: " +totalStake);
-        else
-            System.out.println("Gambler lost by: " +totalStake);
+        /**
+         * if loop for  to check won or lost and print result
+         */
+        if(totalDollars>START_DOLLARS)
+        {
+            System.out.println("Gambler won " +totalDollars);
+        } else {
+            System.out.println("Gambler lost " + totalDollars);
+        }
     }
-
 }
